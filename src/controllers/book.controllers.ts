@@ -63,7 +63,30 @@ export const getBookById = async (req: Request, res: Response) => {
 
   try {
     const result = await Book.findById(bookId);
-    apiResponse(res, 200, true, "", result);
+    apiResponse(res, 200, true, "Book retrieved successfully", result);
+    // eslint-disable-next-line
+  } catch (error: any) {
+    if (error.name === "ValidationError") {
+      errorResponse(res, 400, "Validation failed", {
+        name: error.name,
+        errors: error.errors,
+      });
+    } else
+      errorResponse(res, 500, "Internal server error", {
+        name: error.name,
+        message: error.message,
+      });
+  }
+};
+
+// update a book by ID
+export const updateBookById = async (req: Request, res: Response) => {
+  const { bookId } = req.params;
+  const body = req.body;
+
+  try {
+    const result = await Book.findByIdAndUpdate(bookId, body, { new: true });
+    apiResponse(res, 200, true, "Book updated successfully", result);
     // eslint-disable-next-line
   } catch (error: any) {
     if (error.name === "ValidationError") {

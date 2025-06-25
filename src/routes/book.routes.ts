@@ -3,6 +3,7 @@ import {
   createBook,
   getAllBooks,
   getBookById,
+  updateBookById,
 } from "../controllers/book.controllers";
 
 const bookRoute = Router();
@@ -11,5 +12,6 @@ const bookRoute = Router();
 bookRoute.post("/", createBook);
 bookRoute.get("/", getAllBooks);
 bookRoute.get("/:bookId", getBookById);
+bookRoute.patch("/:bookId", updateBookById);
 
 export default bookRoute;
