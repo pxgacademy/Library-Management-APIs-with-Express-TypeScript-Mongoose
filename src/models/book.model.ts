@@ -24,7 +24,7 @@ const bookSchema = new Schema<CreateBookInputs>(
     copies: {
       type: Number,
       required: [true, "Number of copies is required"],
-      min: [0, "Copies cannot be negative"],
+      min: [1, "Copies cannot be negative, must be at least 1"],
     },
     available: { type: Boolean, required: [true, "Availability is required"] },
   },
