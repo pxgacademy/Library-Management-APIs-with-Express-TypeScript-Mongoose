@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
-import bookRoute from "./controllers/book.controllers";
+import bookRoute from "./routes/book.routes";
 
 const app = express();
 

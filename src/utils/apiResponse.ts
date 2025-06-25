@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 interface ApiResponse<T> {
-  isSuccess: boolean;
+  success: boolean;
   message: string;
   data: T | null;
 }
@@ -9,12 +9,12 @@ interface ApiResponse<T> {
 export const apiResponse = <T>(
   res: Response,
   statusCode: number,
-  isSuccess: boolean,
+  success: boolean,
   message: string,
   data: T | null = null
 ): Response<ApiResponse<T>> =>
   res.status(statusCode).json({
-    isSuccess,
+    success,
     message,
     data,
   });

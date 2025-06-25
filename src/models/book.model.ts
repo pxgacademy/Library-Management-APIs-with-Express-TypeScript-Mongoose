@@ -17,8 +17,8 @@ const bookSchema = new Schema<CreateBookInputs>(
     isbn: {
       type: String,
       required: [true, "ISBN is required"],
-      // unique: [true, "{VALUE} is already exist, enter an unique ISBN"],
-      unique: true,
+      unique: [true, "ISBN is already exist, enter an unique ISBN"],
+      // unique: true,
     },
     description: { type: String, default: "" },
     copies: {
@@ -30,6 +30,7 @@ const bookSchema = new Schema<CreateBookInputs>(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 

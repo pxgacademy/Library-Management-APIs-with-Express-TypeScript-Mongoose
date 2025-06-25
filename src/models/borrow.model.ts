@@ -17,6 +17,7 @@ const borrowSchema = new Schema<BorrowBookInputs>(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 
