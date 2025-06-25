@@ -101,3 +101,25 @@ export const updateBookById = async (req: Request, res: Response) => {
       });
   }
 };
+
+// delete a book by ID
+export const deleteBookById = async (req: Request, res: Response) => {
+  const { bookId } = req.params;
+
+  try {
+    await Book.findOneAndDelete({ _id: bookId });
+    apiResponse(res, 200, true, "Book deleted successfully", null);
+    // eslint-disable-next-line
+  } catch (error: any) {
+    if (error.name === "ValidationError") {
+      errorResponse(res, 400, "Validation failed", {
+        name: error.name,
+        errors: error.errors,
+      });
+    } else
+      errorResponse(res, 500, "Internal server error", {
+        name: error.name,
+        message: error.message,
+      });
+  }
+};
