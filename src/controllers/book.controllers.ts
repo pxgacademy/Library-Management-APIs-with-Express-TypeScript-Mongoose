@@ -56,3 +56,25 @@ export const getAllBooks = async (req: Request, res: Response) => {
       });
   }
 };
+
+// get book by ID
+export const getBookById = async (req: Request, res: Response) => {
+  const { bookId } = req.params;
+
+  try {
+    const result = await Book.findById(bookId);
+    apiResponse(res, 200, true, "", result);
+    // eslint-disable-next-line
+  } catch (error: any) {
+    if (error.name === "ValidationError") {
+      errorResponse(res, 400, "Validation failed", {
+        name: error.name,
+        errors: error.errors,
+      });
+    } else
+      errorResponse(res, 500, "Internal server error", {
+        name: error.name,
+        message: error.message,
+      });
+  }
+};
