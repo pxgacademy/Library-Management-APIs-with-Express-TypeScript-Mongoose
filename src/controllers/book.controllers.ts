@@ -7,7 +7,6 @@ export const createBook = async (req: Request, res: Response) => {
   try {
     const result = await Book.create(req.body);
     apiResponse(res, 201, true, "Book created successfully", result);
-    // eslint-disable-next-line
   } catch (error: any) {
     if (error.name === "ValidationError") {
       errorResponse(res, 400, "Validation failed", {
@@ -42,7 +41,6 @@ export const getAllBooks = async (req: Request, res: Response) => {
       .limit(limitNum);
 
     apiResponse(res, 200, true, "Books retrieved successfully", result);
-    // eslint-disable-next-line
   } catch (error: any) {
     errorResponse(res, 500, "Internal server error", {
       name: error.name,
@@ -66,7 +64,6 @@ export const getBookById = async (req: Request, res: Response) => {
     }
 
     apiResponse(res, 200, true, "Book retrieved successfully", result);
-    // eslint-disable-next-line
   } catch (error: any) {
     errorResponse(res, 500, "Internal server error", {
       name: error.name,
@@ -81,7 +78,9 @@ export const updateBookById = async (req: Request, res: Response) => {
   const body = req.body;
 
   try {
-    const result = await Book.findByIdAndUpdate(bookId, body, { new: true });
+    const result = await Book.findOneAndUpdate({ _id: bookId }, body, {
+      new: true,
+    });
     if (!result) {
       errorResponse(res, 404, "Book not found", {
         name: "Error",
@@ -91,7 +90,6 @@ export const updateBookById = async (req: Request, res: Response) => {
     }
 
     apiResponse(res, 200, true, "Book updated successfully", result);
-    // eslint-disable-next-line
   } catch (error: any) {
     errorResponse(res, 500, "Internal server error", {
       name: error.name,
@@ -115,7 +113,6 @@ export const deleteBookById = async (req: Request, res: Response) => {
     }
 
     apiResponse(res, 200, true, "Book deleted successfully", null);
-    // eslint-disable-next-line
   } catch (error: any) {
     errorResponse(res, 500, "Internal server error", {
       name: error.name,

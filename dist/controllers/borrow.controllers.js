@@ -9,34 +9,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSummary = exports.createBorrow = void 0;
+exports.getBorrowSummary = exports.createBorrow = void 0;
 const borrow_model_1 = require("../models/borrow.model");
-const apiResponse_1 = require("../utils/apiResponse");
-const errorResponse_1 = require("../utils/errorResponse");
+const response_1 = require("../utils/response");
 // create a single book
 const createBorrow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const body = req.body;
     try {
-        const result = yield borrow_model_1.Borrow.create(body);
-        (0, apiResponse_1.apiResponse)(res, 201, true, "Book borrowed successfully", result);
-        // eslint-disable-next-line
+        const result = yield borrow_model_1.Borrow.create(req.body);
+        (0, response_1.apiResponse)(res, 201, true, "Book borrowed successfully", result);
     }
     catch (error) {
         if (error.name === "ValidationError") {
-            (0, errorResponse_1.errorResponse)(res, 400, "Validation failed", {
+            (0, response_1.errorResponse)(res, 400, "Validation failed", {
                 name: error.name,
                 errors: error.errors,
             });
         }
         else
-            (0, errorResponse_1.errorResponse)(res, 500, "Internal server error", {
+            (0, response_1.errorResponse)(res, 500, "Internal server error", {
                 name: error.name,
                 message: error.message,
             });
     }
 });
 exports.createBorrow = createBorrow;
-const getSummary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getBorrowSummary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield borrow_model_1.Borrow.aggregate([
             { $group: { _id: "$book", totalQuantity: { $sum: "$quantity" } } },
@@ -62,21 +59,13 @@ const getSummary = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 },
             },
         ]);
-        (0, apiResponse_1.apiResponse)(res, 200, true, "Borrowed books summary retrieved successfully", result);
-        // eslint-disable-next-line
+        (0, response_1.apiResponse)(res, 200, true, "Borrowed books summary retrieved successfully", result);
     }
     catch (error) {
-        if (error.name === "ValidationError") {
-            (0, errorResponse_1.errorResponse)(res, 400, "Validation failed", {
-                name: error.name,
-                errors: error.errors,
-            });
-        }
-        else
-            (0, errorResponse_1.errorResponse)(res, 500, "Internal server error", {
-                name: error.name,
-                message: error.message,
-            });
+        (0, response_1.errorResponse)(res, 500, "Internal server error", {
+            name: error.name,
+            message: error.message,
+        });
     }
 });
-exports.getSummary = getSummary;
+exports.getBorrowSummary = getBorrowSummary;

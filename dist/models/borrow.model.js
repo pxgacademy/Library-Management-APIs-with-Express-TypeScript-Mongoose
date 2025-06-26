@@ -64,29 +64,34 @@ const borrowSchema = new mongoose_1.Schema({
 // Pre middleware functions
 borrowSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const book = yield book_model_1.Book.findById(this.book);
-        //
-        if (!book) {
-            const err = new mongoose_1.default.Error.ValidationError();
-            err.addError("book", new mongoose_1.default.Error.ValidatorError({
-                path: "book",
-                message: "Book not found",
-            }));
-            return next(err);
+        try {
+            const book = yield book_model_1.Book.findById(this.book);
+            //
+            if (!book) {
+                const err = new mongoose_1.default.Error.ValidationError();
+                err.addError("book", new mongoose_1.default.Error.ValidatorError({
+                    path: "book",
+                    message: "Book not found",
+                }));
+                return next(err);
+            }
+            //
+            if (book.copies < this.quantity) {
+                const err = new mongoose_1.default.Error.ValidationError();
+                err.addError("quantity", new mongoose_1.default.Error.ValidatorError({
+                    path: "quantity",
+                    message: `Not enough copies, now available ${book.copies} copies`,
+                }));
+                return next(err);
+            }
+            // reduce the available copies
+            book.copies -= this.quantity;
+            yield book.updateAvailability();
+            next();
         }
-        //
-        if (book.copies < this.quantity) {
-            const err = new mongoose_1.default.Error.ValidationError();
-            err.addError("quantity", new mongoose_1.default.Error.ValidatorError({
-                path: "quantity",
-                message: `Not enough copies, now available ${book.copies} copies`,
-            }));
-            return next(err);
+        catch (error) {
+            next(error);
         }
-        // reduce the available copies
-        book.copies -= this.quantity;
-        yield book.save();
-        next();
     });
 });
 exports.Borrow = (0, mongoose_1.model)("Borrow", borrowSchema);

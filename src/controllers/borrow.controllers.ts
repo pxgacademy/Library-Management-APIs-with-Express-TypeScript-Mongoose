@@ -7,7 +7,6 @@ export const createBorrow = async (req: Request, res: Response) => {
   try {
     const result = await Borrow.create(req.body);
     apiResponse(res, 201, true, "Book borrowed successfully", result);
-    // eslint-disable-next-line
   } catch (error: any) {
     if (error.name === "ValidationError") {
       errorResponse(res, 400, "Validation failed", {
@@ -56,8 +55,6 @@ export const getBorrowSummary = async (req: Request, res: Response) => {
       "Borrowed books summary retrieved successfully",
       result
     );
-
-    // eslint-disable-next-line
   } catch (error: any) {
     errorResponse(res, 500, "Internal server error", {
       name: error.name,

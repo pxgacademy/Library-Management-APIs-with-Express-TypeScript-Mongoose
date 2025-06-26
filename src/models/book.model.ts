@@ -23,7 +23,7 @@ const bookSchema = new Schema<BookDocument>(
     copies: {
       type: Number,
       required: [true, "Number of copies is required"],
-      min: [1, "Copies cannot be negative, must be at least 1"],
+      min: [0, "Copies cannot be negative, must be at least 1"],
     },
     available: { type: Boolean, required: [true, "Availability is required"] },
   },
@@ -37,5 +37,11 @@ bookSchema.methods.updateAvailability = function () {
   this.available = this.copies > 0;
   return this.save();
 };
+
+bookSchema.post("findOneAndUpdate", async function (doc, next) {
+  doc.available = doc.copies > 0;
+  await doc.save();
+  next();
+});
 
 export const Book = model<BookDocument>("Book", bookSchema);
