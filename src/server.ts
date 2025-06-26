@@ -5,8 +5,8 @@ import app from "./app";
 dotenv.config();
 
 const port = process.env.PORT || 5000;
-// const uri = process.env.MONGODB_URI as string;
-const uri: string = "mongodb://localhost:27018/assignment_3";
+const uri = process.env.MONGODB_URI as string;
+// const uri: string = "mongodb://localhost:27018/assignment_3";
 
 mongoose
   .connect(uri)

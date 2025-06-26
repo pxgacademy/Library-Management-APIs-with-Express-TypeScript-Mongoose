@@ -14,7 +14,11 @@ const mongoose_1 = require("mongoose");
 const book_types_1 = require("../types/book.types");
 const bookSchema = new mongoose_1.Schema({
     title: { type: String, required: [true, "Title is required"], trim: true },
-    author: { type: String, required: [true, "Author is required"] },
+    author: {
+        type: String,
+        required: [true, "Author is required"],
+        trim: true,
+    },
     genre: {
         type: String,
         enum: {

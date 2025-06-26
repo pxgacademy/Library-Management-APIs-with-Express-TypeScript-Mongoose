@@ -4,7 +4,11 @@ import { BookDocument, BookGenre } from "../types/book.types";
 const bookSchema = new Schema<BookDocument>(
   {
     title: { type: String, required: [true, "Title is required"], trim: true },
-    author: { type: String, required: [true, "Author is required"] },
+    author: {
+      type: String,
+      required: [true, "Author is required"],
+      trim: true,
+    },
     genre: {
       type: String,
       enum: {

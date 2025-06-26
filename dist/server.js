@@ -8,8 +8,8 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const app_1 = __importDefault(require("./app"));
 dotenv_1.default.config();
 const port = process.env.PORT || 5000;
-// const uri = process.env.MONGODB_URI as string;
-const uri = "mongodb://localhost:27018/assignment_3";
+const uri = process.env.MONGODB_URI;
+// const uri: string = "mongodb://localhost:27018/assignment_3";
 mongoose_1.default
     .connect(uri)
     .then(() => {

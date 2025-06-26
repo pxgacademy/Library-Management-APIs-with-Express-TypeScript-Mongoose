@@ -23,6 +23,7 @@ app.use((req, res) => {
         .status(404)
         .json({ success: false, message: "Route not found", data: null });
 });
+// eslint-disable-next-line
 app.use((error, req, res, next) => {
     if (error) {
         if (error.name === "ValidationError") {
