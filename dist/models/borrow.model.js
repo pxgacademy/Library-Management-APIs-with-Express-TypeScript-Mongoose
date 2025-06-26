@@ -66,7 +66,6 @@ borrowSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const book = yield book_model_1.Book.findById(this.book);
-            //
             if (!book) {
                 const err = new mongoose_1.default.Error.ValidationError();
                 err.addError("book", new mongoose_1.default.Error.ValidatorError({
@@ -75,7 +74,6 @@ borrowSchema.pre("save", function (next) {
                 }));
                 return next(err);
             }
-            //
             if (book.copies < this.quantity) {
                 const err = new mongoose_1.default.Error.ValidationError();
                 err.addError("quantity", new mongoose_1.default.Error.ValidatorError({

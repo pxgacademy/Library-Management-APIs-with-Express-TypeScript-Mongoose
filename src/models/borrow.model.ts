@@ -27,7 +27,6 @@ borrowSchema.pre("save", async function (next) {
   try {
     const book = await Book.findById(this.book);
 
-    //
     if (!book) {
       const err = new mongoose.Error.ValidationError();
       err.addError(
@@ -37,11 +36,9 @@ borrowSchema.pre("save", async function (next) {
           message: "Book not found",
         })
       );
-
       return next(err);
     }
 
-    //
     if (book.copies < this.quantity) {
       const err = new mongoose.Error.ValidationError();
       err.addError(
@@ -51,14 +48,12 @@ borrowSchema.pre("save", async function (next) {
           message: `Not enough copies, now available ${book.copies} copies`,
         })
       );
-
       return next(err);
     }
 
     // reduce the available copies
     book.copies -= this.quantity;
     await book.updateAvailability();
-
     next();
   } catch (error: any) {
     next(error);

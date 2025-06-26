@@ -2,8 +2,7 @@
 
 A production-ready, modular, and type-safe RESTful API for managing a digital library system. Built using **Node.js**, **Express.js**, **TypeScript**, and **MongoDB (via Mongoose)**.
 
-🔗 **Live Link**: [Library Management API on Vercel](https://library-management-api-ts-mongoose.vercel.app/)  
-📁 **GitHub Repository**: [View on GitHub](https://github.com/pxgacademy/Library-Management-APIs-with-Express-TypeScript-Mongoose)
+🔗 **Live Link**: [Library Management API on Vercel](https://library-management-api-ts-mongoose.vercel.app/)
 
 ---
 
@@ -40,7 +39,6 @@ src/
 - **Express.js**
 - **TypeScript**
 - **MongoDB + Mongoose**
-- **Dotenv** for config
 - **Vercel** for deployment
 
 ---
@@ -127,7 +125,7 @@ npm run start:prod    # run compiled JS with nodemon
    - Dynamically sets `available = true/false` based on remaining copies
 
 3. **`post('findOneAndUpdate')` in Book Model**
-   - Ensures availability status is also updated after manual update of copies via PUT `/api/books/:id`
+   - Ensures availability status is also updated after manual update of copies via PATCH `/api/books/:id`
 
 ```ts
 bookSchema.post("findOneAndUpdate", async function (doc, next) {
