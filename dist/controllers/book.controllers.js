@@ -13,28 +13,18 @@ exports.deleteBookById = exports.updateBookById = exports.getBookById = exports.
 const book_model_1 = require("../models/book.model");
 const response_1 = require("../utils/response");
 // create a single book
-const createBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield book_model_1.Book.create(req.body);
         (0, response_1.apiResponse)(res, 201, true, "Book created successfully", result);
     }
     catch (error) {
-        if (error.name === "ValidationError") {
-            (0, response_1.errorResponse)(res, 400, "Validation failed", {
-                name: error.name,
-                errors: error.errors,
-            });
-        }
-        else
-            (0, response_1.errorResponse)(res, 500, "Internal server error", {
-                name: error.name,
-                message: error.message,
-            });
+        next(error);
     }
 });
 exports.createBook = createBook;
 // get books
-const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // ?filter=FANTASY&sortBy=createdAt&sort=desc&limit=5
     const { filter, sortBy = "createdAt", sort = "desc", limit = "10", } = req.query;
     const query = {};
@@ -49,15 +39,12 @@ const getAllBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         (0, response_1.apiResponse)(res, 200, true, "Books retrieved successfully", result);
     }
     catch (error) {
-        (0, response_1.errorResponse)(res, 500, "Internal server error", {
-            name: error.name,
-            message: error.message,
-        });
+        next(error);
     }
 });
 exports.getAllBooks = getAllBooks;
 // get book by ID
-const getBookById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getBookById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { bookId } = req.params;
     try {
         const result = yield book_model_1.Book.findById(bookId);
@@ -71,15 +58,12 @@ const getBookById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         (0, response_1.apiResponse)(res, 200, true, "Book retrieved successfully", result);
     }
     catch (error) {
-        (0, response_1.errorResponse)(res, 500, "Internal server error", {
-            name: error.name,
-            message: error.message,
-        });
+        next(error);
     }
 });
 exports.getBookById = getBookById;
 // update a book by ID
-const updateBookById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateBookById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { bookId } = req.params;
     const body = req.body;
     try {
@@ -96,15 +80,12 @@ const updateBookById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         (0, response_1.apiResponse)(res, 200, true, "Book updated successfully", result);
     }
     catch (error) {
-        (0, response_1.errorResponse)(res, 500, "Internal server error", {
-            name: error.name,
-            message: error.message,
-        });
+        next(error);
     }
 });
 exports.updateBookById = updateBookById;
 // delete a book by ID
-const deleteBookById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteBookById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { bookId } = req.params;
     try {
         const result = yield book_model_1.Book.findOneAndDelete({ _id: bookId });
@@ -118,10 +99,7 @@ const deleteBookById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         (0, response_1.apiResponse)(res, 200, true, "Book deleted successfully", null);
     }
     catch (error) {
-        (0, response_1.errorResponse)(res, 500, "Internal server error", {
-            name: error.name,
-            message: error.message,
-        });
+        next(error);
     }
 });
 exports.deleteBookById = deleteBookById;

@@ -13,27 +13,17 @@ exports.getBorrowSummary = exports.createBorrow = void 0;
 const borrow_model_1 = require("../models/borrow.model");
 const response_1 = require("../utils/response");
 // create a single book
-const createBorrow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createBorrow = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield borrow_model_1.Borrow.create(req.body);
         (0, response_1.apiResponse)(res, 201, true, "Book borrowed successfully", result);
     }
     catch (error) {
-        if (error.name === "ValidationError") {
-            (0, response_1.errorResponse)(res, 400, "Validation failed", {
-                name: error.name,
-                errors: error.errors,
-            });
-        }
-        else
-            (0, response_1.errorResponse)(res, 500, "Internal server error", {
-                name: error.name,
-                message: error.message,
-            });
+        next(error);
     }
 });
 exports.createBorrow = createBorrow;
-const getBorrowSummary = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getBorrowSummary = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield borrow_model_1.Borrow.aggregate([
             { $group: { _id: "$book", totalQuantity: { $sum: "$quantity" } } },
@@ -62,10 +52,7 @@ const getBorrowSummary = (req, res) => __awaiter(void 0, void 0, void 0, functio
         (0, response_1.apiResponse)(res, 200, true, "Borrowed books summary retrieved successfully", result);
     }
     catch (error) {
-        (0, response_1.errorResponse)(res, 500, "Internal server error", {
-            name: error.name,
-            message: error.message,
-        });
+        next(error);
     }
 });
 exports.getBorrowSummary = getBorrowSummary;

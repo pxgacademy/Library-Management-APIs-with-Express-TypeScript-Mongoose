@@ -1,28 +1,27 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Book } from "../models/book.model";
 import { apiResponse, errorResponse } from "../utils/response";
 
 // create a single book
-export const createBook = async (req: Request, res: Response) => {
+export const createBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await Book.create(req.body);
     apiResponse(res, 201, true, "Book created successfully", result);
-  } catch (error: any) {
-    if (error.name === "ValidationError") {
-      errorResponse(res, 400, "Validation failed", {
-        name: error.name,
-        errors: error.errors,
-      });
-    } else
-      errorResponse(res, 500, "Internal server error", {
-        name: error.name,
-        message: error.message,
-      });
+  } catch (error) {
+    next(error);
   }
 };
 
 // get books
-export const getAllBooks = async (req: Request, res: Response) => {
+export const getAllBooks = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // ?filter=FANTASY&sortBy=createdAt&sort=desc&limit=5
   const {
     filter,
@@ -41,16 +40,17 @@ export const getAllBooks = async (req: Request, res: Response) => {
       .limit(limitNum);
 
     apiResponse(res, 200, true, "Books retrieved successfully", result);
-  } catch (error: any) {
-    errorResponse(res, 500, "Internal server error", {
-      name: error.name,
-      message: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
 // get book by ID
-export const getBookById = async (req: Request, res: Response) => {
+export const getBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { bookId } = req.params;
 
   try {
@@ -64,16 +64,17 @@ export const getBookById = async (req: Request, res: Response) => {
     }
 
     apiResponse(res, 200, true, "Book retrieved successfully", result);
-  } catch (error: any) {
-    errorResponse(res, 500, "Internal server error", {
-      name: error.name,
-      message: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
 // update a book by ID
-export const updateBookById = async (req: Request, res: Response) => {
+export const updateBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { bookId } = req.params;
   const body = req.body;
 
@@ -90,16 +91,17 @@ export const updateBookById = async (req: Request, res: Response) => {
     }
 
     apiResponse(res, 200, true, "Book updated successfully", result);
-  } catch (error: any) {
-    errorResponse(res, 500, "Internal server error", {
-      name: error.name,
-      message: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
 // delete a book by ID
-export const deleteBookById = async (req: Request, res: Response) => {
+export const deleteBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { bookId } = req.params;
 
   try {
@@ -113,10 +115,7 @@ export const deleteBookById = async (req: Request, res: Response) => {
     }
 
     apiResponse(res, 200, true, "Book deleted successfully", null);
-  } catch (error: any) {
-    errorResponse(res, 500, "Internal server error", {
-      name: error.name,
-      message: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };

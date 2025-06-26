@@ -1,27 +1,26 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Borrow } from "../models/borrow.model";
-import { apiResponse, errorResponse } from "../utils/response";
+import { apiResponse } from "../utils/response";
 
 // create a single book
-export const createBorrow = async (req: Request, res: Response) => {
+export const createBorrow = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await Borrow.create(req.body);
     apiResponse(res, 201, true, "Book borrowed successfully", result);
-  } catch (error: any) {
-    if (error.name === "ValidationError") {
-      errorResponse(res, 400, "Validation failed", {
-        name: error.name,
-        errors: error.errors,
-      });
-    } else
-      errorResponse(res, 500, "Internal server error", {
-        name: error.name,
-        message: error.message,
-      });
+  } catch (error) {
+    next(error);
   }
 };
 
-export const getBorrowSummary = async (req: Request, res: Response) => {
+export const getBorrowSummary = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = await Borrow.aggregate([
       { $group: { _id: "$book", totalQuantity: { $sum: "$quantity" } } },
@@ -55,10 +54,7 @@ export const getBorrowSummary = async (req: Request, res: Response) => {
       "Borrowed books summary retrieved successfully",
       result
     );
-  } catch (error: any) {
-    errorResponse(res, 500, "Internal server error", {
-      name: error.name,
-      message: error.message,
-    });
+  } catch (error) {
+    next(error);
   }
 };
