@@ -6,6 +6,12 @@ interface ApiResponse<T> {
   data: T | null;
 }
 
+interface ErrorResponse {
+  success: false;
+  message: string;
+  error: unknown;
+}
+
 export const apiResponse = <T>(
   res: Response,
   statusCode: number,
@@ -18,3 +24,11 @@ export const apiResponse = <T>(
     message,
     data,
   });
+
+export const errorResponse = (
+  res: Response,
+  statusCode: number,
+  message: string,
+  error: unknown
+): Response<ErrorResponse> =>
+  res.status(statusCode).json({ success: false, message, error });

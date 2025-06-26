@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Book } from "../models/book.model";
-import { apiResponse } from "../utils/apiResponse";
-import { errorResponse } from "../utils/errorResponse";
+import { apiResponse, errorResponse } from "../utils/response";
 
 // create a single book
 export const createBook = async (req: Request, res: Response) => {

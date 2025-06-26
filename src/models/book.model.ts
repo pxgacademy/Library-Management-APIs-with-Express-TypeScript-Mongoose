@@ -18,7 +18,6 @@ const bookSchema = new Schema<CreateBookInputs>(
       type: String,
       required: [true, "ISBN is required"],
       unique: [true, "ISBN is already exist, enter an unique ISBN"],
-      // unique: true,
     },
     description: { type: String, default: "" },
     copies: {
@@ -33,5 +32,10 @@ const bookSchema = new Schema<CreateBookInputs>(
     versionKey: false,
   }
 );
+
+bookSchema.methods.updateAvailability = function () {
+  this.available = this.copies > 0;
+  return this.save();
+};
 
 export const Book = model<CreateBookInputs>("Book", bookSchema);

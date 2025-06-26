@@ -1,9 +1,12 @@
 import { Router } from "express";
-import { createBorrow, getSummary } from "../controllers/borrow.controllers";
+import {
+  createBorrow,
+  getBorrowSummary,
+} from "../controllers/borrow.controllers";
 
 const borrowRoute = Router();
 
 borrowRoute.post("/", createBorrow);
-borrowRoute.get("/", getSummary);
+borrowRoute.get("/", getBorrowSummary);
 
 export default borrowRoute;

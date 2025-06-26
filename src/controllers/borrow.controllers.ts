@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Borrow } from "../models/borrow.model";
-import { apiResponse } from "../utils/apiResponse";
-import { errorResponse } from "../utils/errorResponse";
+import { apiResponse, errorResponse } from "../utils/response";
 
 // create a single book
 export const createBorrow = async (req: Request, res: Response) => {
@@ -25,7 +24,7 @@ export const createBorrow = async (req: Request, res: Response) => {
   }
 };
 
-export const getSummary = async (req: Request, res: Response) => {
+export const getBorrowSummary = async (req: Request, res: Response) => {
   try {
     const result = await Borrow.aggregate([
       { $group: { _id: "$book", totalQuantity: { $sum: "$quantity" } } },
