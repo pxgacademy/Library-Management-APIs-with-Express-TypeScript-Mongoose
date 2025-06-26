@@ -57,11 +57,13 @@ export const getBookById = async (req: Request, res: Response) => {
 
   try {
     const result = await Book.findById(bookId);
-    if (!result)
-      return errorResponse(res, 404, "Book not found", {
+    if (!result) {
+      errorResponse(res, 404, "Book not found", {
         name: "Error",
         message: "Book not found",
       });
+      return;
+    }
 
     apiResponse(res, 200, true, "Book retrieved successfully", result);
     // eslint-disable-next-line
@@ -80,11 +82,13 @@ export const updateBookById = async (req: Request, res: Response) => {
 
   try {
     const result = await Book.findByIdAndUpdate(bookId, body, { new: true });
-    if (!result)
-      return errorResponse(res, 404, "Book not found", {
+    if (!result) {
+      errorResponse(res, 404, "Book not found", {
         name: "Error",
         message: "Book not found",
       });
+      return;
+    }
 
     apiResponse(res, 200, true, "Book updated successfully", result);
     // eslint-disable-next-line
@@ -102,11 +106,13 @@ export const deleteBookById = async (req: Request, res: Response) => {
 
   try {
     const result = await Book.findOneAndDelete({ _id: bookId });
-    if (!result)
-      return errorResponse(res, 404, "Book not found", {
+    if (!result) {
+      errorResponse(res, 404, "Book not found", {
         name: "Error",
         message: "Book not found",
       });
+      return;
+    }
 
     apiResponse(res, 200, true, "Book deleted successfully", null);
     // eslint-disable-next-line

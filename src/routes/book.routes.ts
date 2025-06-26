@@ -7,13 +7,13 @@ import {
   updateBookById,
 } from "../controllers/book.controllers";
 
-const bookRoute = Router();
+const bookRouter = Router();
 
 // create a single book
-bookRoute.post("/", createBook);
-bookRoute.get("/", getAllBooks);
-bookRoute.get("/:bookId", getBookById);
-bookRoute.patch("/:bookId", updateBookById);
-bookRoute.delete("/:bookId", deleteBookById);
+bookRouter.post("/", createBook);
+bookRouter.get("/", getAllBooks);
+bookRouter.get("/:bookId", getBookById);
+bookRouter.patch("/:bookId", updateBookById);
+bookRouter.delete("/:bookId", deleteBookById);
 
-export default bookRoute;
+export default bookRouter;

@@ -4,9 +4,9 @@ import {
   getBorrowSummary,
 } from "../controllers/borrow.controllers";
 
-const borrowRoute = Router();
+const borrowRouter = Router();
 
-borrowRoute.post("/", createBorrow);
-borrowRoute.get("/", getBorrowSummary);
+borrowRouter.post("/", createBorrow);
+borrowRouter.get("/", getBorrowSummary);
 
-export default borrowRoute;
+export default borrowRouter;
