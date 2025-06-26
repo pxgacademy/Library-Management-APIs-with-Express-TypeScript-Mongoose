@@ -120,9 +120,55 @@ npm run start:prod    # run compiled JS with nodemon
    - Reduces book copies accordingly
    - Calls `book.updateAvailability()` instance method
 
+```ts
+borrowSchema.pre("save", async function (next) {
+  try {
+    const book = await Book.findById(this.book);
+
+    if (!book) {
+      const err = new mongoose.Error.ValidationError();
+      err.addError(
+        "book",
+        new mongoose.Error.ValidatorError({
+          path: "book",
+          message: "Book not found",
+        })
+      );
+      return next(err);
+    }
+
+    if (book.copies < this.quantity) {
+      const err = new mongoose.Error.ValidationError();
+      err.addError(
+        "quantity",
+        new mongoose.Error.ValidatorError({
+          path: "quantity",
+          message: `Not enough copies, now available ${book.copies} copies`,
+        })
+      );
+      return next(err);
+    }
+
+    // reduce the available copies
+    book.copies -= this.quantity;
+    await book.updateAvailability();
+    next();
+  } catch (error: any) {
+    next(error);
+  }
+});
+```
+
 2. **Instance Method: `book.updateAvailability()`**
 
    - Dynamically sets `available = true/false` based on remaining copies
+
+```ts
+bookSchema.methods.updateAvailability = function () {
+  this.available = this.copies > 0;
+  return this.save();
+};
+```
 
 3. **`post('findOneAndUpdate')` in Book Model**
    - Ensures availability status is also updated after manual update of copies via PATCH `/api/books/:id`
