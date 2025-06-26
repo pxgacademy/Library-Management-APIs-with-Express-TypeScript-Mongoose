@@ -29,3 +29,7 @@ export interface BookResponse {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface BookDocument extends CreateBookInputs, Document {
+  updateAvailability: () => Promise<BookDocument>;
+}

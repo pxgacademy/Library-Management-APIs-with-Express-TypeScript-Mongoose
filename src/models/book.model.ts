@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { BookGenre, CreateBookInputs } from "../types/book.types";
+import { BookDocument, BookGenre } from "../types/book.types";
 
-const bookSchema = new Schema<CreateBookInputs>(
+const bookSchema = new Schema<BookDocument>(
   {
     title: { type: String, required: [true, "Title is required"], trim: true },
     author: { type: String, required: [true, "Author is required"] },
@@ -38,4 +38,4 @@ bookSchema.methods.updateAvailability = function () {
   return this.save();
 };
 
-export const Book = model<CreateBookInputs>("Book", bookSchema);
+export const Book = model<BookDocument>("Book", bookSchema);
